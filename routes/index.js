@@ -12,4 +12,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { data });  // pass server site variables to be rendered as HTML in 'data'
 });
 
+
+router.get('/secret', (req, res) => {
+  secret = 'dYf6vPBpcDM.1olRosOeT4uX1miRovyLKAXpa2aMszkWFnjWOM55NWs'  // direct line secret
+  res.send( { secret } );
+});
+
 module.exports = router;

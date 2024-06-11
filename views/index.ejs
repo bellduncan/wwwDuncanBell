@@ -160,18 +160,26 @@
         };
       
       // TODO: Need to override default welcome message
+      (async function() {
+        const res = await fetch("/secret/");
+        const thesecret = await res.json();
+
       window.WebChat.renderWebChat({
         directLine: window.WebChat.createDirectLine({
-        secret: 'dYf6vPBpcDM.1olRosOeT4uX1miRovyLKAXpa2aMszkWFnjWOM55NWs'}),   // TODO: Need to replace this with token
+          secret: thesecret.secret     // TODO: Need to replace this with token
+        }),
         styleSet,
         styleOptions,
         locale: 'en-US',
         overrideLocalizedStrings: {
           TEXT_INPUT_PLACEHOLDER: 'Ask me a question...'
         }
-      }, document.getElementById('webchat'));
-
-      document.querySelector('#webchat > *').focus(); // TODO: this doesn't seem to work on Chrome on Mac OSX?
+      }, 
+      document.getElementById('webchat')
+      );
+      
+      document.querySelector('#webchat > *').focus(); // Note: this doesn't seem to work on Chrome on Mac OSX?
+    })().catch(err => console.error(err));
     </script>
   </body>
 </html>

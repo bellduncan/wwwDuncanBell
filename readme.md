@@ -25,6 +25,4 @@ Select the 'Azure' icon, then right click on Azure Subscription -> App Services 
 ## Issues
 * Welcome message is default QnA message.
 
-* Code uses embedded DirectLine secret rather than server provided token.
-
-* Set focus to chat bot on load isn't working.
+* Code uses server-side DirectLine secret rather than server provided token.
