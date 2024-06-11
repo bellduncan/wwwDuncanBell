@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/ace73741-7130-4c14-8e61-3fd3c4f0ddcc/resourceGroups/AzureMLSandboxRG/providers/Microsoft.Web/sites/duncanbell",
+    "appService.deploySubpath": "."
+}
