@@ -8,6 +8,8 @@ By default the site loads the 'index.ejs' page in the 'views' directory.
 
 ## Local Server
 To start the server locally, use the following command in integrated terminal for 'wwwDuncanBell':
+   npm run start
+OR
    node ./bin/www
 
 Then navigate in a browser to:
