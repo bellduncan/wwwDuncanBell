@@ -67,7 +67,6 @@
         padding: 12px;
         background-color: rgb(250,250,250);
       }
-
     </style>
   </head>
   
@@ -159,17 +158,46 @@
           hideUploadButton: true
         };
       
-      // TODO: Need to override default welcome message
-      (async function() {
-        const res = await fetch("/secret/");
-        const thesecret = await res.json();
 
+      async function getDirectLineToken() {
+        const res = await fetch('/api/direct-line-token/', {method: 'POST',});
+
+        if (!res.ok) {
+          throw new Error(`Failed to get Direct Line token due to ${res.status}`);
+        }
+
+        return await res.json();
+      }
+
+
+      (async function() {
+        // const res = await fetch("/api/secret/");
+        // const thesecret = await res.json();
+        
+        const directLineTokenResponse = await getDirectLineToken();   // contains userId and token attributes
+        
+        // Use a customized store to add hooks to connect event
+        const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
+          if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+            // When we receive DIRECT_LINE/CONNECT_FULFILLED action, we will send an event activity using WEB_CHAT/SEND_EVENT
+            // This will help to override the default welcome message...
+            dispatch({
+              type: 'WEB_CHAT/SEND_EVENT',
+              payload: {
+                name: 'webchat/join',
+                value: { language: window.navigator.language }
+              }
+            });
+          }
+          
+          return next(action);
+        });
+    
       window.WebChat.renderWebChat({
-        directLine: window.WebChat.createDirectLine({
-          secret: thesecret.secret     // TODO: Need to replace this with token
-        }),
-        styleSet,
-        styleOptions,
+        directLine: window.WebChat.createDirectLine({ token: directLineTokenResponse.token }),
+        store: store,
+        styleSet: styleSet,
+        styleOptions: styleOptions,
         locale: 'en-US',
         overrideLocalizedStrings: {
           TEXT_INPUT_PLACEHOLDER: 'Ask me a question...'
@@ -181,5 +209,29 @@
       document.querySelector('#webchat > *').focus(); // Note: this doesn't seem to work on Chrome on Mac OSX?
     })().catch(err => console.error(err));
     </script>
+
+
+    <script>
+      /*
+this.onEvent(async (context, next) => {
+  if (context.activity.name === 'webchat/join') {
+    await context.sendActivity('Back Channel Welcome Message!');
+  }
+  await next();
+});
+
+this.onMembersAdded(async (context, next) => {
+  const { membersAdded } = context.activity;
+
+  for (let member of membersAdded) {
+    if (member.id !== context.activity.recipient.id) {
+      await context.sendActivity("Welcome Message from `onMembersAdded` handler!");
+    }
+  }
+  await next();
+});
+*/
+    </script>
+
   </body>
 </html>
