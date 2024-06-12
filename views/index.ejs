@@ -1,32 +1,13 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <title>Duncan Bell - Home</title>
+
     <link rel='stylesheet' href='/stylesheets/style.css' />
     
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        font-family: "Verdana", sans-serif;
-        font-size: 14px;
-      }
-
-      li {
-        margin-left: 16px;
-        padding-bottom:12px;
-      }
-      
-      ul {
-        padding: 0px;
-        margin: 0px;
-      }
-      
+    <style>      
       #webchat {
         min-height: 100px;
         max-height: 400px;
@@ -38,38 +19,17 @@
       }
 
       #webchat>* {font-size: 16px;}
-
-      .heading {
-        vertical-align: top;
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        padding-left: 10px;
-      }
-
-      .subheading {
-        vertical-align: top;
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        padding-left: 12px;
-      }
-
-      .content {
-        vertical-align: top;
-        font-size: 14px;
-        word-wrap: normal;
-      }
-
-      .fancybox {
-        border:1px solid rgb(230, 230, 230); 
-        border-radius: 9px;
-        padding: 12px;
-        background-color: rgb(250,250,250);
-      }
     </style>
+
+    <!-- Define some constants for the body content below-->
+    <script>
+      const WEBCHAT_DEFAULT_WELCOME_MESSAGE =  'Welcome to the QnA Maker sample! Ask me a question and I will try to answer it.';
+      const WEBCHAT_OVERRIDE_WELCOME_MESSAGE = 'Welcome';
+      const WEBCHAT_OVERRIDE_TEXT_PROMPT = 'Ask me a question...';
+    </script>
   </head>
   
+
   <body>
     <Table style="width:100%; border-spacing: 12px">
       <tbody>
@@ -124,6 +84,7 @@
         </tr>
       </tbody>
     </Table>
+
 
     <script>
         const styleSet = window.WebChat.createStyleSet({
@@ -190,9 +151,21 @@
             });
           }
           
+          if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+            if (action.payload.activity.type = 'message') {
+              const msgText = action.payload.activity.text; 
+              
+              if (msgText ==  WEBCHAT_DEFAULT_WELCOME_MESSAGE) {
+                // override the welcome message
+                action.payload.activity.text = WEBCHAT_OVERRIDE_WELCOME_MESSAGE;
+              }
+            }
+          }
+
           return next(action);
         });
     
+
       window.WebChat.renderWebChat({
         directLine: window.WebChat.createDirectLine({ token: directLineTokenResponse.token }),
         store: store,
@@ -200,38 +173,16 @@
         styleOptions: styleOptions,
         locale: 'en-US',
         overrideLocalizedStrings: {
-          TEXT_INPUT_PLACEHOLDER: 'Ask me a question...'
+          TEXT_INPUT_PLACEHOLDER: WEBCHAT_OVERRIDE_TEXT_PROMPT
         }
       }, 
       document.getElementById('webchat')
       );
+
       
       document.querySelector('#webchat > *').focus(); // Note: this doesn't seem to work on Chrome on Mac OSX?
     })().catch(err => console.error(err));
     </script>
-
-
-    <script>
-      /*
-this.onEvent(async (context, next) => {
-  if (context.activity.name === 'webchat/join') {
-    await context.sendActivity('Back Channel Welcome Message!');
-  }
-  await next();
-});
-
-this.onMembersAdded(async (context, next) => {
-  const { membersAdded } = context.activity;
-
-  for (let member of membersAdded) {
-    if (member.id !== context.activity.recipient.id) {
-      await context.sendActivity("Welcome Message from `onMembersAdded` handler!");
-    }
-  }
-  await next();
-});
-*/
-    </script>
-
+    
   </body>
 </html>
