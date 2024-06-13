@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-
-    <title>Duncan Bell - Home</title>
-
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    
+
+    <!-- page specific WebChat control sizing-->
     <style>      
       #webchat {
         min-height: 100px;
-        max-height: 400px;
-        height: 400px;
+
+        height: calc(100vh - 116px);
+        max-height: calc(100vh - 116px);
+
         min-width: 400px;
         width: 100%;
+
         overflow: auto;
         display: -webkit-flex;
       }
@@ -21,26 +23,50 @@
       #webchat>* {font-size: 16px;}
     </style>
 
-    <!-- Define some constants for the body content below-->
-    <script>
-      const WEBCHAT_DEFAULT_WELCOME_MESSAGE =  'Welcome to the QnA Maker sample! Ask me a question and I will try to answer it.';
-      const WEBCHAT_OVERRIDE_WELCOME_MESSAGE = 'Welcome';
-      const WEBCHAT_OVERRIDE_TEXT_PROMPT = 'Ask me a question...';
-    </script>
+    <!-- Default column styling-->
+    <style>
+      #col_left {
+        vertical-align:top; 
+        min-width: 300px;
+      }
+
+      #col_right {
+        vertical-align: top; 
+        width:400px; 
+        min-width: 400px; 
+        max-width: 400px;
+      }
+    </style>
+
+    <!--UI visibility overrides depending on screen width-->
+    <style>
+      /* If the screen size is 600px wide or less, hide the left column and just show the chat window */
+      @media only screen and (max-width: 600px) {
+        .subheading {display: none;}
+        .fancybox {display: none;}
+        .content {display: none;}
+        
+        #col_left {display: none;}
+        #col_right {min-width: 100px; width: 100%; max-width: 100%;}
+        #webchat {height: calc(100vh - 116px); max-height: calc(100vh - 116px);}
+      }
+    </style>
+
+    <title>Duncan Bell - Home</title>
   </head>
   
 
   <body>
-    <Table style="width:100%; border-spacing: 12px">
+    <div class="heading">Duncan Alexander Bell</div>
+    <BR>
+    
+    <table style="width:100%; border-spacing: 12px">
       <tbody>
         <tr>
-          <td style="vertical-align:top; min-width: 300px" rowspan="2">
-              <Div class="heading">Duncan Alexander Bell</Div>
-              <BR>
-              
-              <Div class="subheading">Introduction</Div>
+          <td id="col_left" rowspan="2">
+              <div class="subheading">Introduction</div>
               <div class="fancybox">
-                <Div class="content">
+                <div class="content">
                   I am a <span style="font-weight: bold">Senior Solutions Consultant</span> based in Auckland, New Zealand.
                   <BR><BR>
                   Throughout my career, I've played a crucial role in translating user requirements into actionable solutions. 
@@ -48,141 +74,84 @@
                   Over time, I've weaved this into different elements of the delivery process: developing software, both independently and as a development team lead, project managing software delivery projects, technical business analysis, product ownership, and more recently, as a Solutions Consultant (pre-sales and PS).
                   <BR><BR>
                   Always enthusiastic about new technology, I'm currently upskilling with AI certification and programmes, and I love interesting challenges to work through.
-                </Div>
+                </div>
               </div>
               <BR>
-
-              <Div class="subheading">More Information</Div>
+              
+              <div class="subheading">More Information</div>
               <div class="fancybox">
-                <Div class="content">
+                <div class="content">
                   <ul>
                     <li><a target="_blank" href="https://www.linkedin.com/in/duncan-alexander-bell">LinkedIn Profile</a></li>
                     <li><a target="_blank" href="https://www.seek.co.nz/profile/duncan-bell-j5thpvFWnk">Seek Profile</a></Li>
                   </ul>
-                </Div>
+                </div>
               </div>
               <BR>
               
               <div class="fancybox">
-                <Div class="content">
+                <div class="content">
                 The Chat bot on this page is built and deployed on <span style="font-weight: bold">Microsoft Azure.</span>
                 <BR>
                 As this is AI assisted, please consider it to be an experimental sandbox, and if you'd like a real conversation, please contact me through LinkedIn.
                 </div>
               </div>
           </td>
-          <td style = "height: 240px; width:400px; min-width: 400px;">
-            <div class="subheading" style="padding-top:54px;">Chat</div>
-            <div style="margin-top: 10px;  border-radius: 9px; border: 1px solid rgb(230, 230, 230)">
-              <div id="webchat" role="main"></div>
-            </div>
-            </td>
+          
+          <td id="col_right">
+            <div class="subheading2">Chat</div>
+            <div id="webchat" class="fancybox_webchat" role="main" ></div>
+          </td>
         </tr>
+
         <tr>
           <td></td>
           <td style="height: 100%;"></td>
         </tr>
       </tbody>
-    </Table>
+    </table>
 
 
+    <!-- Page specific webchat configuration and styling-->
     <script>
-        const styleSet = window.WebChat.createStyleSet({
-          backgroundColor: 'white',
-          hideUploadButton: true,  // note: This doesn't work in webchat current build (June 2024) so need to set via StyleOption instead
-          sendBoxTextWrap: true ,
-          
-          bubbleBackground: 'rgb(250, 250, 250)',  // light grey
-          bubbleBorderRadius: 10,
-          bubbleBorderWidth: 1,
-          bubbleBorderColor: 'rgb(230,230,230)',
+      const WEBCHAT_DEFAULT_WELCOME_MESSAGE =  'Welcome to the QnA Maker sample! Ask me a question and I will try to answer it.';
+      const WEBCHAT_OVERRIDE_WELCOME_MESSAGE = 'Welcome';
+      const WEBCHAT_OVERRIDE_TEXT_PROMPT = 'Ask me a question...';
 
-          bubbleFromUserBackground: 'rgb(138, 211, 242)', // light blue
-          bubbleFromUserBorderRadius: 10,
-          bubbleFromUserBorderWidth: 1,
-          bubbleFromUserBorderColor: 'rgb(230,230,230)',
-
-          bubbleMinWidth: 400,
-          rootHeight: '100%',
-          rootWidth: '100%'
-        });
-
-        styleSet.textContent = {
-         ...styleSet.textContent,
-         fontFamily: "'Verdana', 'Arial', sans-serif",
-         fontWeight: 'normal'
-        };
+      const styleSet = window.WebChat.createStyleSet({
+        backgroundColor: 'white',
+        hideUploadButton: true,  // note: This doesn't work in webchat current build (June 2024) so need to set via StyleOption instead
+        sendBoxTextWrap: true ,
         
-        const styleOptions = {
-          // botAvatarInitials: 'DB',
-          // userAvatarInitials: 'User',
-          hideUploadButton: true
-        };
+        bubbleBackground: 'rgb(250, 250, 250)',  // light grey
+        bubbleBorderRadius: 10,
+        bubbleBorderWidth: 1,
+        bubbleBorderColor: 'rgb(230,230,230)',
+
+        bubbleFromUserBackground: 'rgb(138, 211, 242)', // light blue
+        bubbleFromUserBorderRadius: 10,
+        bubbleFromUserBorderWidth: 1,
+        bubbleFromUserBorderColor: 'rgb(230,230,230)',
+        
+        rootHeight: '100%',
+        rootWidth: '100%'
+      });
       
-
-      async function getDirectLineToken() {
-        const res = await fetch('/api/direct-line-token/', {method: 'POST',});
-
-        if (!res.ok) {
-          throw new Error(`Failed to get Direct Line token due to ${res.status}`);
-        }
-
-        return await res.json();
-      }
-
-
-      (async function() {
-        // const res = await fetch("/api/secret/");
-        // const thesecret = await res.json();
-        
-        const directLineTokenResponse = await getDirectLineToken();   // contains userId and token attributes
-        
-        // Use a customized store to add hooks to connect event
-        const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
-          if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-            // When we receive DIRECT_LINE/CONNECT_FULFILLED action, we will send an event activity using WEB_CHAT/SEND_EVENT
-            // This will help to override the default welcome message...
-            dispatch({
-              type: 'WEB_CHAT/SEND_EVENT',
-              payload: {
-                name: 'webchat/join',
-                value: { language: window.navigator.language }
-              }
-            });
-          }
-          
-          if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
-            if (action.payload.activity.type = 'message') {
-              const msgText = action.payload.activity.text; 
-              
-              if (msgText ==  WEBCHAT_DEFAULT_WELCOME_MESSAGE) {
-                // override the welcome message
-                action.payload.activity.text = WEBCHAT_OVERRIDE_WELCOME_MESSAGE;
-              }
-            }
-          }
-
-          return next(action);
-        });
-    
-
-      window.WebChat.renderWebChat({
-        directLine: window.WebChat.createDirectLine({ token: directLineTokenResponse.token }),
-        store: store,
-        styleSet: styleSet,
-        styleOptions: styleOptions,
-        locale: 'en-US',
-        overrideLocalizedStrings: {
-          TEXT_INPUT_PLACEHOLDER: WEBCHAT_OVERRIDE_TEXT_PROMPT
-        }
-      }, 
-      document.getElementById('webchat')
-      );
-
+      styleSet.textContent = {
+        ...styleSet.textContent,
+        fontFamily: "'Verdana', 'Arial', sans-serif",
+        fontWeight: 'normal'
+      };
       
-      document.querySelector('#webchat > *').focus(); // Note: this doesn't seem to work on Chrome on Mac OSX?
-    })().catch(err => console.error(err));
+      const styleOptions = {
+        // botAvatarInitials: 'DB',
+        // userAvatarInitials: 'User',
+        hideUploadButton: true
+      };
     </script>
+
+    <!-- Import of WebChat control logic -->
+    <script src="/javascripts/webChatControl.js"></script>
     
   </body>
 </html>
