@@ -137,12 +137,12 @@
         </div>
       </div>
     </div>
-
+    
     <!-- Page specific webchat configuration and styling-->
     <script>
       const WEBCHAT_DEFAULT_WELCOME_MESSAGE =  'Welcome to the QnA Maker sample! Ask me a question and I will try to answer it.';
-      const WEBCHAT_OVERRIDE_WELCOME_MESSAGE = 'Welcome';
-      const WEBCHAT_OVERRIDE_TEXT_PROMPT = 'Ask me a question...';
+      const WEBCHAT_OVERRIDE_WELCOME_MESSAGE = 'Hello.  You can ask questions about Duncan\'s Resume, get responses to \'Interview style\' questions, or simply type \'Questions\' to see a list of topics to explore.';
+      const WEBCHAT_OVERRIDE_TEXT_PROMPT = 'Ask a question...';
 
       const styleSet = window.WebChat.createStyleSet({
         backgroundColor: 'white',
@@ -165,7 +165,7 @@
       
       styleSet.textContent = {
         ...styleSet.textContent,
-        fontFamily: "'Verdana', 'Arial', sans-serif",
+        fontFamily: "'Source Sans Light', 'Arial', sans-serif",
         fontWeight: 'normal'
       };
       
