@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
+  <!-- Yes, I hand-crafted this all myself.  
+       Serverside, it uses the Express.js framework deployed through an Azure App Service.
+       Clientside, it uses Javascript, CSS, and a little JQuery too for popup window control.
+       The Microsoft BotFramework WebChat provides the chat functionality, secured through DirectLine serverside token provision.
+       The AI infused Azure Custom Question Answering tool provides the underlying Questions & Answers.
+  -->
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
     <!-- page specific WebChat control sizing-->
@@ -10,10 +17,18 @@
       #webchat {
         min-height: 100px;
 
-        height: calc(100vh - 116px);
-        max-height: calc(100vh - 116px);
+        height: calc(100vh - 160px);        /* 100vh doesn't render properly on Safari */
+        max-height: calc(100vh - 160px);    /* 100vh doesn't render properly on Safari */
+        
+        /* This css attempts to handle Safari by using dynamic viewport height instead */
+        /* Also possible to use 'svh' (small viewport height) */
+        /* https://opus.ing/posts/fixing-ios-safaris-menu-bar-overlap-css-viewport-units */
+        @supports (height: 100dvh) {
+          height: calc(100dvh - 160px);
+          max-height: calc(100dvh - 160px);
+        }
 
-        min-width: 400px;
+        min-width: 370px;
         width: 100%;
 
         overflow: auto;
@@ -29,26 +44,26 @@
         vertical-align:top; 
         min-width: 300px;
       }
-
+      
       #col_right {
         vertical-align: top; 
         width:400px; 
-        min-width: 400px; 
+        min-width: 300px; 
         max-width: 400px;
       }
     </style>
 
     <!--UI visibility overrides depending on screen width-->
     <style>
-      /* If the screen size is 600px wide or less, hide the left column and just show the chat window */
-      @media only screen and (max-width: 600px) {
-        .subheading {display: none;}
-        .fancybox {display: none;}
-        .content {display: none;}
-        
+      /* If the screen size is 740px wide or less, hide the left column and just show the chat window */
+      @media only screen and (max-width: 740px) {        
         #col_left {display: none;}
         #col_right {min-width: 100px; width: 100%; max-width: 100%;}
-        #webchat {height: calc(100vh - 116px); max-height: calc(100vh - 116px);}
+        #webchat {height: calc(100vh - 160px); max-height: calc(100vh - 160px);}
+
+        @supports (height: 100dvh) {
+          #webchat {height: calc(100dvh - 160px); max-height: calc(100dvh - 160px);}
+        }
       }
     </style>
 
@@ -58,28 +73,30 @@
 
   <body>
     <div class="heading">Duncan Alexander Bell</div>
-    <BR>
+    <br>
     
     <table style="width:100%; border-spacing: 12px">
       <tbody>
         <tr>
           <td id="col_left" rowspan="2">
-              <div class="subheading">Introduction</div>
               <div class="fancybox">
+                <div class="subheading">Introduction</div>
+                <hr>
                 <div class="content">
                   I am a <span style="font-weight: bold">Senior Solutions Consultant</span> based in Auckland, New Zealand.
-                  <BR><BR>
+                  <br><br>
                   Throughout my career, I've played a crucial role in translating user requirements into actionable solutions. 
-                  <BR><BR>
+                  <br><br>
                   Over time, I've weaved this into different elements of the delivery process: developing software, both independently and as a development team lead, project managing software delivery projects, technical business analysis, product ownership, and more recently, as a Solutions Consultant (pre-sales and PS).
-                  <BR><BR>
+                  <br><br>
                   Always enthusiastic about new technology, I'm currently upskilling with AI certification and programmes, and I love interesting challenges to work through.
                 </div>
               </div>
-              <BR>
+              <br>
               
-              <div class="subheading">More Information</div>
               <div class="fancybox">
+                <div class="subheading">More Information</div>
+                <hr>
                 <div class="content">
                   <ul>
                     <li><a target="_blank" href="https://www.linkedin.com/in/duncan-alexander-bell">LinkedIn Profile</a></li>
@@ -87,23 +104,17 @@
                   </ul>
                 </div>
               </div>
-              <BR>
-              
-              <div class="fancybox">
-                <div class="content">
-                The Chat bot on this page is built and deployed on <span style="font-weight: bold">Microsoft Azure.</span>
-                <BR>
-                As this is AI assisted, please consider it to be an experimental sandbox, and if you'd like a real conversation, please contact me through LinkedIn.
-                </div>
-              </div>
           </td>
           
           <td id="col_right">
-            <div class="subheading2">Chat</div>
-            <div id="webchat" class="fancybox_webchat" role="main" ></div>
+            <div class="fancybox">
+              <div class="subheading">Chat <span class="open-popup"><img src="/images/info-2-16.png" width=12px height=12px /></span></div>
+              <hr>
+              <div id="webchat" role="main" ></div>
+            </div>
           </td>
         </tr>
-
+        
         <tr>
           <td></td>
           <td style="height: 100%;"></td>
@@ -111,6 +122,20 @@
       </tbody>
     </table>
 
+    <div class="popup-container" style="display:none;">
+      <div class="popup-content">
+        <div class="subheading">Chat Bot</div>
+        <div class="close-popup"><img src="/images/x-mark-16.png" width="12px" height="12px"/></div>
+        <hr>
+        <div class="content">
+        The Chat bot on this page is built and deployed on <span style="font-weight: bold">Microsoft Azure.</span>
+        <br><br>
+        You can ask it a variety of 'resume' or 'interview' questions, or simply type 'questions' to see some examples.
+        <br><br>
+        As this is AI assisted, please consider it to be an experimental sandbox, and if you'd like a real conversation, please contact me through LinkedIn.
+        </div>
+      </div>
+    </div>
 
     <!-- Page specific webchat configuration and styling-->
     <script>
@@ -153,5 +178,7 @@
     <!-- Import of WebChat control logic -->
     <script src="/javascripts/webChatControl.js"></script>
     
+    <!-- popup functions -->
+    <script src="/javascripts/popupWindow.js"></script>
   </body>
 </html>

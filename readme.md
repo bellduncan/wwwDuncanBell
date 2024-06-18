@@ -5,6 +5,9 @@ https://duncanbell.azurewebsites.net/
 The site is built from Express.Js, and uses the Microsoft WebChat component too.
 By default the site loads the 'index.ejs' page in the 'views' directory.
 
+Icons are from:
+https://www.iconsdb.com/
+
 
 ## Local Server
 To start the server locally, use the following command in integrated terminal for 'wwwDuncanBell':
