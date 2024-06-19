@@ -49,7 +49,12 @@ async function getDirectLineToken() {
     store: store,
     styleSet: styleSet,
     styleOptions: styleOptions,
-    locale: 'en-US',
+    locale: 'en-GB',
+
+    // https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts#text-to-speech
+    //selectVoice: ( voices, activity ) => voices.find( ( { name } ) => /SoniaNeural/iu.test( name ) ),    // doesn't work :-(
+    // webSpeechPonyfillFactory: window.WebChat.createBrowserWebSpeechPonyfillFactory(),  // doesn't work well on mobile devices (input never ends) so disabling
+    
     overrideLocalizedStrings: {
       TEXT_INPUT_PLACEHOLDER: WEBCHAT_OVERRIDE_TEXT_PROMPT
     }

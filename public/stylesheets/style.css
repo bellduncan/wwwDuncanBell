@@ -30,14 +30,37 @@ hr {
   padding: 0; 
 }
 
-.heading {
-  vertical-align: top;
+.heading_box {  
+  margin-left: 12px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+
+  padding: 0px;
+
+  width: calc(100vw - 41px);
+  
+  border:1px solid rgb(230, 230, 230); 
+  border-radius: 9px;
+  background-color: rgb(255, 255, 255);
+}
+
+.heading_title {
+  text-align: center;
   font-size: 22px;
   font-weight: bold;
-  padding-top: 16px;
-  padding-left: 24px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.heading_tagline {
+  color: rgb(141, 141, 141);
+  text-align: center;
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0px;
+  padding-bottom: 8px;
+  width: 100%;
 }
 
 .subheading {

@@ -17,19 +17,19 @@
       #webchat {
         min-height: 100px;
 
-        height: calc(100vh - 160px);        /* 100vh doesn't render properly on Safari */
-        max-height: calc(100vh - 160px);    /* 100vh doesn't render properly on Safari */
+        height: calc(100vh - 180px);        /* 100vh doesn't render properly on Safari */
+        max-height: calc(100vh - 180px);    /* 100vh doesn't render properly on Safari */
         
         /* This css attempts to handle Safari by using dynamic viewport height instead */
         /* Also possible to use 'svh' (small viewport height) */
         /* https://opus.ing/posts/fixing-ios-safaris-menu-bar-overlap-css-viewport-units */
         @supports (height: 100dvh) {
-          height: calc(100dvh - 160px);
-          max-height: calc(100dvh - 160px);
+          height: calc(100dvh - 180px);
+          max-height: calc(100dvh - 180px);
         }
 
-        min-width: 370px;
-        width: 100%;
+        min-width: 350px;
+        width: 350px;
 
         overflow: auto;
         display: -webkit-flex;
@@ -47,9 +47,9 @@
       
       #col_right {
         vertical-align: top; 
-        width:400px; 
+        width:370px; 
         min-width: 300px; 
-        max-width: 400px;
+        max-width: 370px;
       }
     </style>
 
@@ -59,10 +59,10 @@
       @media only screen and (max-width: 740px) {        
         #col_left {display: none;}
         #col_right {min-width: 100px; width: 100%; max-width: 100%;}
-        #webchat {height: calc(100vh - 160px); max-height: calc(100vh - 160px);}
+        #webchat {height: calc(100vh - 180px); max-height: calc(100vh - 180px);}
 
         @supports (height: 100dvh) {
-          #webchat {height: calc(100dvh - 160px); max-height: calc(100dvh - 160px);}
+          #webchat {height: calc(100dvh - 180px); max-height: calc(100dvh - 180px);}
         }
       }
     </style>
@@ -73,10 +73,16 @@
   
 
   <body>
-    <div class="heading">Duncan Alexander Bell</div>
-    <br>
+    <div class="heading_box">
+      <div class="heading_title">
+        Duncan Bell
+      </div>
+      <div class="heading_tagline">
+        Senior Solutions Consultant | Technical Product Owner
+      </div>
+    </div>
     
-    <table style="width:100%; border-spacing: 12px">
+    <table style="width:100%; border-spacing: 12px; margin-bottom:0px; padding-bottom: 0px; margin-right: 0px; padding-right: 0px;">
       <tbody>
         <tr>
           <td id="col_left" rowspan="2">
@@ -100,6 +106,7 @@
                 <hr>
                 <div class="content">
                   <ul>
+                    <li><a target="_blank" href="/images/Duncan Bell - Resume.pdf">Resume</a></li>
                     <li><a target="_blank" href="https://www.linkedin.com/in/duncan-alexander-bell">LinkedIn Profile</a></li>
                     <li><a target="_blank" href="https://www.seek.co.nz/profile/duncan-bell-j5thpvFWnk">Seek Profile</a></Li>
                   </ul>
@@ -109,7 +116,7 @@
           
           <td id="col_right">
             <div class="fancybox">
-              <div class="subheading">Chat <span class="open-popup"><img src="/images/info-2-16.png" width=12px height=12px /></span></div>
+              <div class="subheading">Questions & Answers <span class="open-popup"><img src="/images/info-2-16.png" width=12px height=12px /></span></div>
               <hr>
               <div id="webchat" role="main" ></div>
             </div>
@@ -125,13 +132,13 @@
 
     <div class="popup-container" style="display:none;">
       <div class="popup-content">
-        <div class="subheading">Chat Bot</div>
+        <div class="subheading">Questions & Answers - Information</div>
         <div class="close-popup"><img src="/images/x-mark-16.png" width="12px" height="12px"/></div>
         <hr>
         <div class="content">
-        The Chat bot on this page is built and deployed on <span style="font-weight: bold">Microsoft Azure.</span>
+        The Question Answering chat bot on this page is built and deployed on <span style="font-weight: bold">Microsoft Azure.</span>
         <br><br>
-        You can ask it a variety of 'resume' or 'interview' questions, or simply type 'questions' to see some examples.
+        You can ask it a variety of 'Resume' or 'Interview' questions, or simply type 'Questions' to see some examples.
         <br><br>
         As this is AI assisted, please consider it to be an experimental sandbox, and if you'd like a real conversation, please contact me through LinkedIn.
         </div>
