@@ -12,8 +12,6 @@ https://www.iconsdb.com/
 ## Local Server
 To start the server locally, use the following command in integrated terminal for 'wwwDuncanBell':
    npm run start
-OR
-   node ./bin/www
 
 Then navigate in a browser to:
    http://localhost:3000

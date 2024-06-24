@@ -30,15 +30,23 @@ hr {
   padding: 0; 
 }
 
+table, th, tr, td {
+  margin: 0px;
+  padding: 0px;
+  /* border: 1px solid; */
+  border-spacing: 0px 0px;
+}
+
 .heading_box {  
   margin-left: 12px;
   margin-top: 12px;
-  margin-bottom: 0px;
-  margin-right: 0px;
+  margin-bottom: 12px;
+  margin-right: 12px;
 
   padding: 0px;
-
-  width: calc(100vw - 41px);
+  
+  /* width: calc(100vw - 26px); */
+  width: calc(100% - 26px);
   
   border:1px solid rgb(230, 230, 230); 
   border-radius: 9px;
@@ -80,6 +88,15 @@ hr {
 .fancybox {
   border:1px solid rgb(230, 230, 230); 
   border-radius: 9px;
+  margin: 0px;
+  padding: 12px;
+  background-color: rgb(255,255,255);
+}
+
+#fancybox_qa {
+  border:1px solid rgb(230, 230, 230); 
+  border-radius: 9px;
+  margin: 0px;
   padding: 12px;
   background-color: rgb(255,255,255);
 }

@@ -17,25 +17,32 @@
       #webchat {
         min-height: 100px;
 
-        height: calc(100vh - 180px);        /* 100vh doesn't render properly on Safari */
-        max-height: calc(100vh - 180px);    /* 100vh doesn't render properly on Safari */
-        
+        /* note: this is for 'desktop' by default, and mobile devices have overrides specified with media tags below */
+        height: calc(100vh - 188px);        /* 100vh doesn't render properly on Safari */
+        max-height: calc(100vh - 188px);    /* 100vh doesn't render properly on Safari */
         /* This css attempts to handle Safari by using dynamic viewport height instead */
         /* Also possible to use 'svh' (small viewport height) */
         /* https://opus.ing/posts/fixing-ios-safaris-menu-bar-overlap-css-viewport-units */
         @supports (height: 100dvh) {
-          height: calc(100dvh - 180px);
-          max-height: calc(100dvh - 180px);
+          height: calc(100dvh - 188px);
+          max-height: calc(100dvh - 188px);
         }
 
-        min-width: 350px;
-        width: 350px;
+        min-width: 300px;
+        width: 100%;
 
         overflow: auto;
         display: -webkit-flex;
       }
 
       #webchat>* {font-size: 16px;}
+      
+      #webchat_initmsg {
+        font-family: 'Source Sans Light', 'Arial', sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        display: block;
+      }
     </style>
 
     <!-- Default column styling-->
@@ -53,16 +60,31 @@
       }
     </style>
 
-    <!--UI visibility overrides depending on screen width-->
+    <!--UI visibility overrides depending on screen width and orientation-->
     <style>
       /* If the screen size is 740px wide or less, hide the left column and just show the chat window */
-      @media only screen and (max-width: 740px) {        
+      @media only screen and (max-width: 740px) and (orientation: portrait) {        
         #col_left {display: none;}
         #col_right {min-width: 100px; width: 100%; max-width: 100%;}
-        #webchat {height: calc(100vh - 180px); max-height: calc(100vh - 180px);}
+        #fancybox_qa {margin-left: 12px;}
 
+        #webchat {height: calc(100vh - 188px); max-height: calc(100vh - 188px);}
         @supports (height: 100dvh) {
-          #webchat {height: calc(100dvh - 180px); max-height: calc(100dvh - 180px);}
+          #webchat {height: calc(100dvh - 188px); max-height: calc(100dvh - 188px);}
+        }
+      }
+
+      @media only screen and (max-width: 740px) and (orientation: landscape) {
+        #col_left {display: none;}
+        #col_right {min-width: 100px; width: 100%; max-width: 100%;}
+        #fancybox_qa {margin-left: 12px;}
+        
+        /* This requires modification as the dvh on mobile devices is small */
+        /* However the orientation attribute only looks at the physical Width and Height, not a flag from the device */
+        /* So, if a desktop window is made to look like landscape it will trigger this style too */ 
+        #webchat {height: calc(100vh - 188px); max-height: calc(100vh - 188px);}
+        @supports (height: 100dvh) {
+          #webchat {height: calc(100dvh - 188px); max-height: calc(100dvh - 188px);}
         }
       }
     </style>
@@ -82,11 +104,10 @@
       </div>
     </div>
     
-    <table style="width:100%; border-spacing: 12px; margin-bottom:0px; padding-bottom: 0px; margin-right: 0px; padding-right: 0px;">
-      <tbody>
+    <table style="width:100%;">
         <tr>
           <td id="col_left" rowspan="2">
-              <div class="fancybox">
+              <div class="fancybox" style="margin-left: 12px; margin-right: 12px; margin-bottom: 12px">
                 <div class="subheading">Introduction</div>
                 <hr>
                 <div class="content">
@@ -94,14 +115,13 @@
                   <br><br>
                   Throughout my career, I've played a crucial role in translating user requirements into actionable solutions. 
                   <br><br>
-                  Over time, I've weaved this into different elements of the delivery process: developing software, both independently and as a development team lead, project managing software delivery projects, technical business analysis, product ownership, and more recently, as a Solutions Consultant (pre-sales and PS).
+                  Over time, I've weaved this into different elements of the delivery process: developing software, both independently and as a development team lead, project managing software delivery projects, technical business analysis, product ownership, and more recently, as a Solutions Consultant (Pre-sales and Professional Services).
                   <br><br>
                   Always enthusiastic about new technology, I'm currently upskilling with AI certification and programmes, and I love interesting challenges to work through.
                 </div>
               </div>
-              <br>
               
-              <div class="fancybox">
+              <div class="fancybox" style="margin-left: 12px; margin-right: 12px; margin-bottom: 12px;">
                 <div class="subheading">More Information</div>
                 <hr>
                 <div class="content">
@@ -115,9 +135,10 @@
           </td>
           
           <td id="col_right">
-            <div class="fancybox">
+            <div id="fancybox_qa" style="margin-right: 12px">
               <div class="subheading">Questions & Answers <span class="open-popup"><img src="/images/info-2-16.png" width=12px height=12px /></span></div>
               <hr>
+              <div id="webchat_initmsg">Please wait, chat is initializing...</div>
               <div id="webchat" role="main" ></div>
             </div>
           </td>
@@ -127,7 +148,6 @@
           <td></td>
           <td style="height: 100%;"></td>
         </tr>
-      </tbody>
     </table>
 
     <div class="popup-container" style="display:none;">
@@ -159,12 +179,12 @@
         bubbleBackground: 'rgb(250, 250, 250)',  // light grey
         bubbleBorderRadius: 10,
         bubbleBorderWidth: 1,
-        bubbleBorderColor: 'rgb(230,230,230)',
+        bubbleBorderColor: 'rgb(230, 230, 230)',
 
         bubbleFromUserBackground: 'rgb(138, 211, 242)', // light blue
         bubbleFromUserBorderRadius: 10,
         bubbleFromUserBorderWidth: 1,
-        bubbleFromUserBorderColor: 'rgb(230,230,230)',
+        bubbleFromUserBorderColor: 'rgb(230, 230, 230)',
         
         rootHeight: '100%',
         rootWidth: '100%'
@@ -188,5 +208,6 @@
     
     <!-- popup functions -->
     <script src="/javascripts/popupWindow.js"></script>
+
   </body>
 </html>

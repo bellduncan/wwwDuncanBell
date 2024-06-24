@@ -9,7 +9,7 @@ async function getDirectLineToken() {
   }
   
 
-  (async function() {
+(async function() {
     // const res = await fetch("/api/secret/");
     // const thesecret = await res.json();
     
@@ -33,13 +33,21 @@ async function getDirectLineToken() {
         if (action.payload.activity.type = 'message') {
           const msgText = action.payload.activity.text; 
           
-          if (msgText ==  WEBCHAT_DEFAULT_WELCOME_MESSAGE) {
-            // override the welcome message
-            action.payload.activity.text = WEBCHAT_OVERRIDE_WELCOME_MESSAGE;
+          if (action.payload.activity.from.role === 'bot') {
+            if (msgText ==  WEBCHAT_DEFAULT_WELCOME_MESSAGE) {
+              // override the welcome message
+              action.payload.activity.text = WEBCHAT_OVERRIDE_WELCOME_MESSAGE;
+              // hide the initializing message (regardless of the message received)     
+              document.getElementById('webchat_initmsg').style = "display: none";
+            }
+            else if ((msgText ==  '') ) {
+              // hide the initializing message (regardless of the message received)     
+              document.getElementById('webchat_initmsg').style = "display: none";
+            }
           }
-        }
+        }        
       }
-
+      
       return next(action);
     });
 
